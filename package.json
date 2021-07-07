@@ -12,5 +12,8 @@
   },
   "scripts": {
     "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest"
   }
 }
