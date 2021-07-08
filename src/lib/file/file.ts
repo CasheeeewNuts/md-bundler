@@ -1,6 +1,8 @@
 import Path, {ParsedPath} from "path";
-import FileInterface = MarkDownBundler.FileInterface;
 import Fs from "fs";
+import {Content} from "./content";
+import FileInterface = MarkDownBundler.FileInterface;
+import ReadableInterface = MarkDownBundler.ReadableInterface;
 
 
 export abstract class File implements FileInterface {
@@ -10,7 +12,7 @@ export abstract class File implements FileInterface {
   basename: string;
   extension: string;
   abstract parent?: FileInterface;
-  children: MarkDownBundler.ReadableInterface[] = [];
+  chunks: MarkDownBundler.ReadableInterface[] = [];
 
 
   protected constructor(path: string) {
@@ -25,6 +27,8 @@ export abstract class File implements FileInterface {
     if (!this.exists()) {
       throw `file ${this.basename} is not exists in directory (${this.dirname})`;
     }
+
+    this.load();
   }
 
 
@@ -34,16 +38,30 @@ export abstract class File implements FileInterface {
 
 
   public read(): Buffer {
-    return Fs.readFileSync(this.absolutePath);
+    if (this.chunks.length === 0) {
+      return Buffer.alloc(0, 0);
+    }
+
+    return this.chunks.reduce((bundled: Buffer, readable: ReadableInterface) => {
+      return Buffer.concat([bundled, readable.read()])
+    }, Buffer.allocUnsafe(0));
   }
 
-  protected setParent(parent: FileInterface) {
+
+  protected setParent(parent: FileInterface): void {
     this.parent = parent;
-    parent.children.push(this);
+    parent.chunks.push(this);
   }
 
 
-  private resolveAbsolutePath() {
+  private load(): void {
+    const content: Content = new Content(Fs.readFileSync(this.absolutePath));
+
+    this.chunks.push(content)
+  }
+
+
+  private resolveAbsolutePath(): string {
     if (Path.isAbsolute(this.plainPath)) {
       return this.plainPath;
     }

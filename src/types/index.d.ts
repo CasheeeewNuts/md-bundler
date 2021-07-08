@@ -10,7 +10,7 @@ declare namespace MarkDownBundler {
     basename: string,
     extension: string
     parent?: FileInterface,
-    children: ReadableInterface[]
+    chunks: ReadableInterface[]
   }
 
   interface MarkDownFileInterface extends FileInterface {
