@@ -40,6 +40,10 @@ describe('Test MarkDownFile class', () => {
   });
 
   test('input invalid absolute path', () => {
-    expect(() => new MarkDownFile('./correct.md')).toThrow(`file correct.md is not exists in directory (/Users/nuts/Project/md-bundler)`)
+    expect(() => new MarkDownFile('./correct.md')).toThrow('file correct.md is not exists in directory (/Users/nuts/Project/md-bundler)')
+  });
+
+  test('input invalid extension file name', () => {
+    expect(() => new MarkDownFile('./test/correct.mp')).toThrow('read file is not markdown file')
   });
 });
