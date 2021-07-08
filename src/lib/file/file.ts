@@ -28,6 +28,21 @@ export abstract class File implements FileInterface {
   }
 
 
+  public exists(): boolean {
+    return Fs.existsSync(this.absolutePath);
+  }
+
+
+  public read(): Buffer {
+    return Fs.readFileSync(this.absolutePath);
+  }
+
+  protected setParent(parent: FileInterface) {
+    this.parent = parent;
+    parent.children.push(this);
+  }
+
+
   private resolveAbsolutePath() {
     if (Path.isAbsolute(this.plainPath)) {
       return this.plainPath;
@@ -39,15 +54,4 @@ export abstract class File implements FileInterface {
 
     return Path.resolve(process.cwd(), this.plainPath);
   }
-
-
-  public exists(): boolean {
-    return Fs.existsSync(this.absolutePath);
-  }
-
-
-  public read(): Buffer {
-    return Fs.readFileSync(this.absolutePath);
-  }
-
 }

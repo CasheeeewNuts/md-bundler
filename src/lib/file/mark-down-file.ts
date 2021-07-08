@@ -14,6 +14,8 @@ export class MarkDownFile extends File implements MarkDownFileInterface {
       throw 'read file is not markdown file'
     }
 
-    this.parent = parent;
+    if (parent != null) {
+      this.setParent(parent);
+    }
   }
 }
