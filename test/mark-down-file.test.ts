@@ -13,7 +13,7 @@ describe('Test MarkDownFile class', () => {
     expect(file.basename).toMatch('correct.md')
     expect(file.extension).toMatch('.md')
     expect(file.parent).toEqual(undefined)
-    expect(file.chunks).toEqual([])
+    expect(file.chunks).toEqual([new Content(fs.readFileSync(file.absolutePath))])
   });
 
   test('input valid relative path', () => {
@@ -25,7 +25,7 @@ describe('Test MarkDownFile class', () => {
     expect(file.basename).toMatch('correct.md')
     expect(file.extension).toMatch('.md')
     expect(file.parent).toEqual(undefined)
-    expect(file.chunks).toEqual([])
+    expect(file.chunks).toEqual([new Content(fs.readFileSync(file.absolutePath))])
   });
 
   test('input valid relative path with parent', () => {
@@ -38,7 +38,7 @@ describe('Test MarkDownFile class', () => {
     expect(child.basename).toMatch('test.md')
     expect(child.extension).toMatch('.md')
     expect(child.parent).toEqual<MarkDownFile>(parent)
-    expect(child.chunks).toEqual([])
+    expect(child.chunks).toEqual([new Content(fs.readFileSync(child.absolutePath))])
   });
 
   test('input invalid absolute path', () => {
