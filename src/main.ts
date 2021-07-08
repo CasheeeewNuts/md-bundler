@@ -13,7 +13,7 @@ export default function (filePath: string) {
   rootFile.toString().split('\n').forEach(line => {
     if (!line.match(TAG_REGEX)) {
       buffer.write(line);
-      console.log(line)
+      return;
     }
 
     const includeFilePath = line.replace(TAG_REGEX, '$1');
