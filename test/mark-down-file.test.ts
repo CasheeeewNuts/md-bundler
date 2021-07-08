@@ -1,4 +1,4 @@
-import {MarkDownFile} from "../src/lib/mark-down-file";
+import {MarkDownFile} from "../src/lib/file/mark-down-file";
 
 
 describe('Test MarkDownFile class', () => {
