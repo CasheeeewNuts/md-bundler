@@ -4,7 +4,10 @@ import {createWriteStream} from "fs";
 import {bundle} from "./core/bundle";
 
 
-export default function main() {
+main();
+
+
+function main(): void {
   init();
 
   const [path, outputFileName] = program.args;
@@ -28,13 +31,14 @@ export default function main() {
 }
 
 
-function init() {
+function init(): void {
   program.version('0.2.0')
-      .usage('[options] source_file [target_file]')
+      .usage("[options] source_file [target_file]\nif don't pass argument target_file, output bundled to stdout")
       .parse(process.argv);
 }
 
-function exitAfterShowUsage() {
+
+function exitAfterShowUsage(): void {
   program.outputHelp()
   process.exit();
 }
