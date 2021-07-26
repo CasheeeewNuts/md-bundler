@@ -34,7 +34,7 @@ Content
 .
 .
 
-![./bundled.md]
+![./bundled.md] // absolute path or relative path from bundling file's directory
 ```
 
 
