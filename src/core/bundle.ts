@@ -42,5 +42,3 @@ export function bundle(entrypoint: string, output?: stream.Transform) {
   const source = fs.createReadStream(entrypoint);
   return source.pipe(transform).pipe(buffer)
 }
-
-bundle('/Users/nuts/Project/md-bundler/test/assets/test.md').pipe(process.stdout)
