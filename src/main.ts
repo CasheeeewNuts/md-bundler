@@ -1,28 +1,40 @@
-import * as fs from "fs";
-import path from "path";
+import Path from "path";
+import {program} from "commander";
+import {createWriteStream} from "fs";
+import {bundle} from "./core/bundle";
 
 
-const TAG_REGEX = /^!\[(.+)]/;
+export default function main() {
+  init();
 
-export default function (filePath: string) {
-  let buffer: Buffer = Buffer.alloc(0);
+  const [path, outputFileName] = program.args;
 
-  const rootFile = fs.readFileSync(filePath);
-  const rootFileDirectory = path.dirname(filePath);
+  if (path == null) {
+    exitAfterShowUsage();
+  }
 
-  rootFile.toString().split('\n').forEach(line => {
-    if (!line.match(TAG_REGEX)) {
-      buffer.write(line);
-      return;
+  const entrypoint = Path.isAbsolute(path) ? path : Path.resolve(process.cwd(), path);
+  const output = outputFileName != null ? createWriteStream(outputFileName) : process.stdout;
+
+  const stream = bundle(entrypoint);
+
+  stream.on('error', () => {
+    if (output !== process.stdout) {
+      output.destroy();
     }
+  });
 
-    const includeFilePath = line.replace(TAG_REGEX, '$1');
-    const resolvedIncludeFilePath = path.isAbsolute(includeFilePath)
-        ? includeFilePath
-        : path.resolve(rootFileDirectory, includeFilePath);
+  stream.pipe(output);
+}
 
-    buffer = Buffer.concat([buffer, fs.readFileSync(resolvedIncludeFilePath), Buffer.from('\n')]);
-  })
 
-  return buffer.toString();
+function init() {
+  program.version('0.2.0')
+      .usage('[options] source_file [target_file]')
+      .parse(process.argv);
+}
+
+function exitAfterShowUsage() {
+  program.outputHelp()
+  process.exit();
 }
