@@ -37,5 +37,9 @@ Content
 ![./bundled.md] // absolute path or relative path from bundling file's directory
 ```
 
+## Others
+Please your feedback, PullRequest, issue!!!  
+[GitHub Repository](https://github.com/CasheeeewNuts/md-bundler/pulls)
+
 
 

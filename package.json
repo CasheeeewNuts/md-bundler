@@ -10,6 +10,10 @@
     "bundle"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CasheeeewNuts/md-bundler.git"
+  },
   "devDependencies": {
     "@types/commander": "^2.12.2",
     "@types/jest": "^26.0.24",
