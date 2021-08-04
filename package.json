@@ -1,6 +1,6 @@
 {
   "name": "md-bundler",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "main": "./lib/core/bundle.js",
   "bin": {
     "mdb": "./bin/index"
