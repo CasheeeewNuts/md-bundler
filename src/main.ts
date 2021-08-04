@@ -1,6 +1,6 @@
 import Path from "path";
 import {program} from "commander";
-import {createWriteStream} from "fs";
+import {createWriteStream, WriteStream} from "fs";
 import {bundle} from "./core/bundle";
 
 
@@ -17,7 +17,7 @@ function main(): void {
   }
 
   const entrypoint = Path.isAbsolute(path) ? path : Path.resolve(process.cwd(), path);
-  const output = outputFileName != null ? createWriteStream(outputFileName) : process.stdout;
+  const output = createOutputStream(entrypoint, outputFileName);
 
   const stream = bundle(entrypoint);
 
@@ -28,6 +28,19 @@ function main(): void {
   });
 
   stream.pipe(output);
+}
+
+
+function createOutputStream(entryPoint: string, path?: string): WriteStream | NodeJS.WriteStream {
+  if (path == null) {
+    return process.stdout
+  }
+
+  const outPath = Path.isAbsolute(path)
+      ? path
+      : Path.resolve(entryPoint, path);
+
+  return createWriteStream(outPath);
 }
 
 
