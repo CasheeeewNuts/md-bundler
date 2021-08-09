@@ -38,7 +38,7 @@ function createOutputStream(entryPoint: string, path?: string): WriteStream | No
 
   const outPath = Path.isAbsolute(path)
       ? path
-      : Path.resolve(entryPoint, path);
+      : Path.resolve(process.cwd(), path);
 
   return createWriteStream(outPath);
 }
